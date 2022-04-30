@@ -22,6 +22,7 @@ class LoginProvider with ChangeNotifier {
     _isLoading = true;
     _errorMessage = '';
     notifyListeners();
+
     try {
       await _auth.signInWithEmailAndPassword(email: email, password: password);
     } catch (e) {
@@ -52,5 +53,13 @@ class LoginProvider with ChangeNotifier {
     }
     _isLoading = false;
     notifyListeners();
+  }
+
+  bool verifyIsLogged() {
+    if (_auth.currentUser == null) {
+      return false;
+    } else {
+      return true;
+    }
   }
 }

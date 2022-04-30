@@ -1,7 +1,9 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:olx/pages/login_provider.dart';
-import 'package:olx/pages/login_page.dart';
+import 'package:olx/pages/announcement/announcement_page.dart';
+import 'package:olx/pages/login/login_provider.dart';
+import 'package:olx/pages/login/login_page.dart';
+import 'package:olx/utils/app_routes.dart';
 import 'package:provider/provider.dart';
 
 void main() async {
@@ -19,7 +21,12 @@ void main() async {
       child: MaterialApp(
         theme: themeData,
         debugShowCheckedModeBanner: false,
-        home: const LoginPage(),
+        home: const AnnouncementPage(),
+        initialRoute: AppRoutes.announcement,
+        routes: {
+          AppRoutes.announcement: (context) => const AnnouncementPage(),
+          AppRoutes.login: (context) => const LoginPage(),
+        },
       ),
     ),
   );

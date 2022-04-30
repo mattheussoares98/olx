@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:olx/components/snackbar_component.dart';
-import 'package:olx/pages/login_provider.dart';
-import 'package:olx/pages/textfield_component.dart';
+import 'package:olx/pages/login/login_provider.dart';
+import 'package:olx/pages/login/textfield_component.dart';
+import 'package:olx/utils/app_routes.dart';
 import 'package:provider/provider.dart';
 
 class LoginPage extends StatefulWidget {
@@ -20,7 +21,7 @@ class _LoginPageState extends State<LoginPage> {
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
-  _validate(LoginProvider loginProvider) async {
+  _loginOrRegister(LoginProvider loginProvider) async {
     bool isValid = _formKey.currentState!.validate();
     if (!isValid) {
       return;
@@ -36,6 +37,11 @@ class _LoginPageState extends State<LoginPage> {
         email: _emailController.text,
         password: _passwordController.text,
       );
+    }
+    bool isLogged = loginProvider.verifyIsLogged();
+    if (isLogged) {
+      Navigator.of(context)
+          .pushNamedAndRemoveUntil(AppRoutes.announcement, (route) => false);
     }
   }
 
@@ -63,6 +69,7 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                   const SizedBox(height: 30),
                   TextFieldComponent(
+                    enabled: loginProvider.isLoading ? false : true,
                     autoFocus: true,
                     label: 'E-mail',
                     textInputType: TextInputType.emailAddress,
@@ -70,6 +77,7 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                   const SizedBox(height: 10),
                   TextFieldComponent(
+                    enabled: loginProvider.isLoading ? false : true,
                     textEditingController: _passwordController,
                     label: 'Senha',
                     isPassword: true,
@@ -109,7 +117,7 @@ class _LoginPageState extends State<LoginPage> {
                     onPressed: loginProvider.isLoading
                         ? null
                         : () async {
-                            await _validate(loginProvider);
+                            await _loginOrRegister(loginProvider);
 
                             if (loginProvider.errorMessage != '') {
                               SnackBarComponent().showSnackbar(
@@ -118,12 +126,14 @@ class _LoginPageState extends State<LoginPage> {
                               );
                             }
                           },
-                    child: Text(
-                      _register ? 'Cadastrar' : 'Entrar',
-                      style: const TextStyle(
-                        fontSize: 17,
-                      ),
-                    ),
+                    child: loginProvider.isLoading
+                        ? const CircularProgressIndicator()
+                        : Text(
+                            _register ? 'Cadastrar' : 'Entrar',
+                            style: const TextStyle(
+                              fontSize: 17,
+                            ),
+                          ),
                   ),
                 ],
               ),

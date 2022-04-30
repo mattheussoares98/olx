@@ -7,10 +7,12 @@ class TextFieldComponent extends StatefulWidget {
   final bool obscureText;
   final TextEditingController textEditingController;
   final bool isPassword;
+  final bool enabled;
 
   const TextFieldComponent({
     required this.label,
     required this.textEditingController,
+    required this.enabled,
     this.isPassword = false,
     this.autoFocus = false,
     this.obscureText = false,
@@ -38,6 +40,7 @@ class _TextFieldComponentState extends State<TextFieldComponent> {
       obscureText: widget.isPassword ? true : false,
       keyboardType: widget.textInputType,
       autofocus: widget.autoFocus,
+      enabled: widget.enabled,
       decoration: InputDecoration(
         labelText: widget.label,
         enabledBorder: _outlineInputBorder(),
