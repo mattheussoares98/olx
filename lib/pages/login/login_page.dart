@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:olx/components/snackbar_component.dart';
 import 'package:olx/pages/login/login_provider.dart';
@@ -38,8 +39,8 @@ class _LoginPageState extends State<LoginPage> {
         password: _passwordController.text,
       );
     }
-    bool isLogged = loginProvider.verifyIsLogged();
-    if (isLogged) {
+
+    if (FirebaseAuth.instance.currentUser != null) {
       Navigator.of(context)
           .pushNamedAndRemoveUntil(AppRoutes.announcement, (route) => false);
     }

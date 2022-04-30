@@ -54,12 +54,4 @@ class LoginProvider with ChangeNotifier {
     _isLoading = false;
     notifyListeners();
   }
-
-  bool verifyIsLogged() {
-    if (_auth.currentUser == null) {
-      return false;
-    } else {
-      return true;
-    }
-  }
 }
