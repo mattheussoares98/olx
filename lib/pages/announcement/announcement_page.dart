@@ -1,8 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:olx/pages/login/login_provider.dart';
 import 'package:olx/utils/app_routes.dart';
-import 'package:provider/provider.dart';
 
 class AnnouncementPage extends StatefulWidget {
   const AnnouncementPage({Key? key}) : super(key: key);
@@ -38,6 +36,8 @@ class _AnnouncementPageState extends State<AnnouncementPage> {
       _popupMenuOptions = [
         'Entrar/Cadastrar',
       ];
+    } else if (item == 'Meus anúncios') {
+      Navigator.of(context).pushNamed(AppRoutes.myAnnouncements);
     }
   }
 

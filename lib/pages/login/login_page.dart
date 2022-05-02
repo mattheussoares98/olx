@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:olx/components/personalized_button_component.dart';
 import 'package:olx/components/snackbar_component.dart';
 import 'package:olx/pages/login/login_provider.dart';
 import 'package:olx/pages/login/textfield_component.dart';
@@ -42,7 +43,7 @@ class _LoginPageState extends State<LoginPage> {
 
     if (FirebaseAuth.instance.currentUser != null) {
       Navigator.of(context)
-          .pushNamedAndRemoveUntil(AppRoutes.announcement, (route) => false);
+          .pushNamedAndRemoveUntil(AppRoutes.announcements, (route) => false);
     }
   }
 
@@ -110,31 +111,19 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                     ],
                   ),
-                  ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      minimumSize: const Size(double.infinity, 50),
-                      maximumSize: const Size(double.infinity, 50),
-                    ),
-                    onPressed: loginProvider.isLoading
-                        ? null
-                        : () async {
-                            await _loginOrRegister(loginProvider);
+                  PersonalizedButtonComponent(
+                    onPressed: () async {
+                      await _loginOrRegister(loginProvider);
 
-                            if (loginProvider.errorMessage != '') {
-                              SnackBarComponent().showSnackbar(
-                                error: loginProvider.errorMessage,
-                                context: context,
-                              );
-                            }
-                          },
-                    child: loginProvider.isLoading
-                        ? const CircularProgressIndicator()
-                        : Text(
-                            _register ? 'Cadastrar' : 'Entrar',
-                            style: const TextStyle(
-                              fontSize: 17,
-                            ),
-                          ),
+                      if (loginProvider.errorMessage != '') {
+                        SnackBarComponent().showSnackbar(
+                          error: loginProvider.errorMessage,
+                          context: context,
+                        );
+                      }
+                    },
+                    text: 'Login',
+                    isLoading: loginProvider.isLoading,
                   ),
                 ],
               ),

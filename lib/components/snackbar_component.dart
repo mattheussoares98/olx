@@ -4,11 +4,12 @@ class SnackBarComponent {
   showSnackbar({
     required String error,
     required BuildContext context,
+    Color backgroundColor = Colors.red,
   }) {
     ScaffoldMessenger.of(context).clearSnackBars();
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        backgroundColor: Colors.red,
+        backgroundColor: backgroundColor,
         content: Padding(
           padding: const EdgeInsets.symmetric(
             vertical: 5,

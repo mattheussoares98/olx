@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:olx/pages/announcement/announcement_page.dart';
 import 'package:olx/pages/login/login_provider.dart';
 import 'package:olx/pages/login/login_page.dart';
+import 'package:olx/pages/my_announcements/my_announcements_page.dart';
+import 'package:olx/pages/new_announcement/new_announcement_page.dart';
 import 'package:olx/utils/app_routes.dart';
 import 'package:provider/provider.dart';
 
@@ -22,10 +24,12 @@ void main() async {
         theme: themeData,
         debugShowCheckedModeBanner: false,
         home: const AnnouncementPage(),
-        initialRoute: AppRoutes.announcement,
+        initialRoute: AppRoutes.announcements,
         routes: {
-          AppRoutes.announcement: (context) => const AnnouncementPage(),
+          AppRoutes.announcements: (context) => const AnnouncementPage(),
           AppRoutes.login: (context) => const LoginPage(),
+          AppRoutes.myAnnouncements: (context) => const MyAnnouncementsPage(),
+          AppRoutes.newAnnouncement: (context) => const NewAnnouncementPage(),
         },
       ),
     ),
