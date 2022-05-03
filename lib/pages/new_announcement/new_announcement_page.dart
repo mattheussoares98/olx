@@ -2,6 +2,9 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:olx/components/personalized_button_component.dart';
+import 'package:olx/pages/new_announcement/new_announcement_controller.dart';
+import 'package:olx/pages/new_announcement/new_announcement_dropdownbutton.dart';
+import 'package:olx/pages/new_announcement/new_announcement_images_widget.dart';
 
 class NewAnnouncementPage extends StatefulWidget {
   const NewAnnouncementPage({Key? key}) : super(key: key);
@@ -12,8 +15,7 @@ class NewAnnouncementPage extends StatefulWidget {
 
 class _NewAnnouncementPageState extends State<NewAnnouncementPage> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-
-  List<File> _images = [];
+  final List<File> _images = [];
 
   @override
   Widget build(BuildContext context) {
@@ -30,84 +32,10 @@ class _NewAnnouncementPageState extends State<NewAnnouncementPage> {
               key: _formKey,
               child: Column(
                 children: [
-                  SizedBox(
-                    height: 120,
-                    width: double.infinity,
-                    child: FormField<List>(
-                      initialValue: _images,
-                      validator: (images) {
-                        if (images!.isEmpty) {
-                          print('é vazio');
-                          return 'Pelo menos uma imagem deve ser selecionada!';
-                        }
-                        return null;
-                      },
-                      builder: (state) {
-                        return ListView.builder(
-                          itemCount: _images.length + 1,
-                          scrollDirection: Axis.horizontal,
-                          itemBuilder: (context, index) {
-                            if (index == _images.length) {
-                              return Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  CircleAvatar(
-                                    radius: 50,
-                                    backgroundColor: Colors.grey,
-                                    child: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        Icon(
-                                          Icons.add_a_photo,
-                                          size: 40,
-                                          color: Colors.grey[100],
-                                        ),
-                                        const SizedBox(height: 2),
-                                        Text(
-                                          'Adicionar',
-                                          style: TextStyle(
-                                            color: Colors.grey[100],
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                  if (state.hasError)
-                                    Text(
-                                      state.errorText!,
-                                      style: const TextStyle(
-                                        color: Colors.red,
-                                      ),
-                                    )
-                                ],
-                              );
-                            } else {
-                              return CircleAvatar(
-                                child: Text('teste'),
-                                radius: 50,
-                              );
-                            }
-                          },
-                        );
-                      },
-                    ),
+                  NewAnnouncementImagesWidget(
+                    images: _images,
                   ),
-                  Row(
-                    children: [
-                      DropdownButton(
-                        items: const [
-                          DropdownMenuItem(
-                            child: Text('Estado'),
-                          ),
-                          // DropdownMenuItem(
-                          //   child: Text('Categoria'),
-                          // ),
-                        ],
-                        onChanged: (dynamic value) {},
-                      ),
-                    ],
-                  ),
+                  const NewAnnouncementDropdownButton(),
                   // TextFormField(),
                   PersonalizedButtonComponent(
                     onPressed: () {
