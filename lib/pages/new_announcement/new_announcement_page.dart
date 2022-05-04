@@ -36,7 +36,7 @@ class _NewAnnouncementPageState extends State<NewAnnouncementPage> {
                     images: _images,
                   ),
                   const NewAnnouncementDropdownButton(),
-                  // TextFormField(),
+                  const SizedBox(height: 10),
                   PersonalizedButtonComponent(
                     onPressed: () {
                       _formKey.currentState?.validate();
