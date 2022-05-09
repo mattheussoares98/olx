@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:olx/components/personalized_button_component.dart';
 import 'package:olx/components/snackbar_component.dart';
 import 'package:olx/pages/login/login_provider.dart';
-import 'package:olx/pages/login/textfield_component.dart';
+import 'package:olx/components/textfield_component.dart';
 import 'package:olx/utils/app_routes.dart';
 import 'package:provider/provider.dart';
 
@@ -76,6 +76,17 @@ class _LoginPageState extends State<LoginPage> {
                     label: 'E-mail',
                     textInputType: TextInputType.emailAddress,
                     textEditingController: _emailController,
+                    validator: (value) {
+                      if (value!.isEmpty) {
+                        return 'Digite o e-mail';
+                      } else if (!value.contains('@')) {
+                        return 'E-mail inválido';
+                      } else if (!value.contains('.')) {
+                        return 'E-mail inválido';
+                      } else {
+                        return null;
+                      }
+                    },
                   ),
                   const SizedBox(height: 10),
                   TextFieldComponent(
@@ -83,6 +94,15 @@ class _LoginPageState extends State<LoginPage> {
                     textEditingController: _passwordController,
                     label: 'Senha',
                     isPassword: true,
+                    validator: (value) {
+                      if (value!.isEmpty) {
+                        return 'Digite a senha';
+                      } else if (value.length < 6) {
+                        return 'A senha deve conter no mínimo 6 caracteres';
+                      } else {
+                        return null;
+                      }
+                    },
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,

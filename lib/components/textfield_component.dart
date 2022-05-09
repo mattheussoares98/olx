@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class TextFieldComponent extends StatefulWidget {
   final String label;
@@ -8,11 +9,19 @@ class TextFieldComponent extends StatefulWidget {
   final TextEditingController textEditingController;
   final bool isPassword;
   final bool enabled;
+  final List<TextInputFormatter>? textInputFormatter;
+  final String? Function(String?)? validator;
+  final int maxLength;
+  final int maxLines;
 
   const TextFieldComponent({
     required this.label,
     required this.textEditingController,
     required this.enabled,
+    this.validator,
+    this.maxLength = 50,
+    this.maxLines = 1,
+    this.textInputFormatter,
     this.isPassword = false,
     this.autoFocus = false,
     this.obscureText = false,
@@ -36,12 +45,16 @@ class _TextFieldComponentState extends State<TextFieldComponent> {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      maxLength: widget.maxLength,
+      maxLines: widget.maxLines,
+      inputFormatters: widget.textInputFormatter,
       controller: widget.textEditingController,
       obscureText: widget.isPassword ? true : false,
       keyboardType: widget.textInputType,
       autofocus: widget.autoFocus,
       enabled: widget.enabled,
       decoration: InputDecoration(
+        counterText: '',
         labelText: widget.label,
         enabledBorder: _outlineInputBorder(),
         border: _outlineInputBorder(),
@@ -53,27 +66,7 @@ class _TextFieldComponentState extends State<TextFieldComponent> {
           color: Colors.white,
         ),
       ),
-      validator: widget.isPassword
-          ? (value) {
-              if (value!.isEmpty) {
-                return 'Digite a senha';
-              } else if (value.length < 6) {
-                return 'A senha deve conter no mínimo 6 caracteres';
-              } else {
-                return null;
-              }
-            }
-          : (value) {
-              if (value!.isEmpty) {
-                return 'Digite o e-mail';
-              } else if (!value.contains('@')) {
-                return 'E-mail inválido';
-              } else if (!value.contains('.')) {
-                return 'E-mail inválido';
-              } else {
-                return null;
-              }
-            },
+      validator: widget.validator,
     );
   }
 }

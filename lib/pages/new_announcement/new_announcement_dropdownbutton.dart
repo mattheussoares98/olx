@@ -13,8 +13,8 @@ class NewAnnouncementDropdownButton extends StatefulWidget {
 
 class _NewAnnouncementDropdownButtonState
     extends State<NewAnnouncementDropdownButton> {
-  String _selectedState = "Estados";
-  String _selecteTypeAnnouncement = "Outros";
+  String? _selectedState;
+  String? _selecteTypeAnnouncement;
   final List<String> _typesOfAnnouncements = [
     'Automóvel',
     'Imóvel',
@@ -30,16 +30,17 @@ class _NewAnnouncementDropdownButtonState
       children: [
         Expanded(
           child: DropdownButtonFormField<String>(
+            value: _selectedState,
+            hint: const Text('Estado'),
             validator: (value) {
               if (value == null) {
                 return 'Selecione um estado!';
               }
               return null;
             },
-            hint: const Text('Estado'),
-            onChanged: (regiaoSelecionada) {
+            onChanged: (value) {
               setState(() {
-                _selectedState = regiaoSelecionada!;
+                _selectedState = value!;
               });
             },
             items: Estados.listaEstadosSigla
@@ -55,6 +56,7 @@ class _NewAnnouncementDropdownButtonState
         const SizedBox(width: 20),
         Expanded(
           child: DropdownButtonFormField<String>(
+            value: _selecteTypeAnnouncement,
             validator: (value) {
               if (value == null) {
                 return 'Selecione um tipo!';

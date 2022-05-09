@@ -2,9 +2,9 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:olx/components/personalized_button_component.dart';
-import 'package:olx/pages/new_announcement/new_announcement_controller.dart';
 import 'package:olx/pages/new_announcement/new_announcement_dropdownbutton.dart';
 import 'package:olx/pages/new_announcement/new_announcement_images_widget.dart';
+import 'package:olx/pages/new_announcement/new_announcement_textformfields.dart';
 
 class NewAnnouncementPage extends StatefulWidget {
   const NewAnnouncementPage({Key? key}) : super(key: key);
@@ -37,6 +37,7 @@ class _NewAnnouncementPageState extends State<NewAnnouncementPage> {
                   ),
                   const NewAnnouncementDropdownButton(),
                   const SizedBox(height: 10),
+                  const NewAnnouncementsTextFormFields(),
                   PersonalizedButtonComponent(
                     onPressed: () {
                       _formKey.currentState?.validate();
