@@ -5,6 +5,7 @@ import 'package:olx/pages/login/login_provider.dart';
 import 'package:olx/pages/login/login_page.dart';
 import 'package:olx/pages/my_announcements/my_announcements_page.dart';
 import 'package:olx/pages/new_announcement/new_announcement_page.dart';
+import 'package:olx/pages/new_announcement/new_announcement_provider.dart';
 import 'package:olx/utils/app_routes.dart';
 import 'package:provider/provider.dart';
 
@@ -19,6 +20,7 @@ void main() async {
     MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => LoginProvider()),
+        ChangeNotifierProvider(create: (_) => NewAnnouncementProvider()),
       ],
       child: MaterialApp(
         theme: themeData,

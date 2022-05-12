@@ -1,8 +1,11 @@
 import 'package:brasil_fields/brasil_fields.dart';
 import 'package:flutter/material.dart';
+import 'package:olx/pages/new_announcement/new_announcement_model.dart';
 
 class NewAnnouncementDropdownButton extends StatefulWidget {
+  final NewAnnouncementModel newAnnouncementModel;
   const NewAnnouncementDropdownButton({
+    required this.newAnnouncementModel,
     Key? key,
   }) : super(key: key);
 
@@ -42,6 +45,7 @@ class _NewAnnouncementDropdownButtonState
               setState(() {
                 _selectedState = value!;
               });
+              widget.newAnnouncementModel.state = value;
             },
             items: Estados.listaEstadosSigla
                 .map(
@@ -64,10 +68,11 @@ class _NewAnnouncementDropdownButtonState
               return null;
             },
             hint: const Text('Tipo de anúncio'),
-            onChanged: (typeSelected) {
+            onChanged: (value) {
               setState(() {
-                _selecteTypeAnnouncement = typeSelected!;
+                _selecteTypeAnnouncement = value!;
               });
+              widget.newAnnouncementModel.typeOfAnnouncement = value;
             },
             items: _typesOfAnnouncements
                 .map(

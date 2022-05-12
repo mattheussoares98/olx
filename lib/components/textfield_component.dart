@@ -11,6 +11,7 @@ class TextFieldComponent extends StatefulWidget {
   final bool enabled;
   final List<TextInputFormatter>? textInputFormatter;
   final String? Function(String?)? validator;
+  final Function(String?)? onChanged;
   final int maxLength;
   final int maxLines;
 
@@ -18,6 +19,7 @@ class TextFieldComponent extends StatefulWidget {
     required this.label,
     required this.textEditingController,
     required this.enabled,
+    this.onChanged,
     this.validator,
     this.maxLength = 50,
     this.maxLines = 1,
@@ -45,6 +47,7 @@ class _TextFieldComponentState extends State<TextFieldComponent> {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      onChanged: widget.onChanged,
       maxLength: widget.maxLength,
       maxLines: widget.maxLines,
       inputFormatters: widget.textInputFormatter,
