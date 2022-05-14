@@ -19,7 +19,7 @@ class NewAnnouncementProvider with ChangeNotifier {
 
   // final NewAnnouncementModel _newAnnouncementModel = NewAnnouncementModel();
 
-  List<String> _urlImagesDownload = [];
+  static List<String> _urlImagesDownload = [];
   Future<void> saveAnnouncement({
     required List<File> images,
     required NewAnnouncementModel newAnnouncementModel,
@@ -32,22 +32,16 @@ class NewAnnouncementProvider with ChangeNotifier {
         .doc()
         .id; //pegando o id antes de salvar a imagem. Coloquei aqui o ID pra ter o mesmo id no firebaseStorage e firestore
 
-    print(_urlImagesDownload);
     await _uploadImage(
       newAnnouncementId: newAnnouncementId,
       images: images,
       newAnnouncementModel: newAnnouncementModel,
-      urlImagesDownload: _urlImagesDownload,
     );
-    print(_urlImagesDownload);
 
     await _saveAnnouncementModel(
       newAnnouncementId: newAnnouncementId,
       newAnnouncementModel: newAnnouncementModel,
-      urlImagesDownload: _urlImagesDownload,
     );
-
-    print(_urlImagesDownload);
 
     _isLoading = false;
     notifyListeners();
@@ -57,8 +51,8 @@ class NewAnnouncementProvider with ChangeNotifier {
     required List<File> images,
     required String newAnnouncementId,
     required NewAnnouncementModel newAnnouncementModel,
-    required List<String> urlImagesDownload,
   }) async {
+    _urlImagesDownload.clear();
     UploadTask? uploadTasks;
 
     List<dynamic> imageNamesList =
@@ -83,7 +77,7 @@ class NewAnnouncementProvider with ChangeNotifier {
       e;
     }
 
-    uploadTasks!.whenComplete(() async {
+    await uploadTasks!.whenComplete(() async {
       //só tenta obter as URLs de download depois que já fez todos uploads
       for (var image in imageNamesList) {
         String imageUrl = await _firebaseStorage
@@ -94,24 +88,22 @@ class NewAnnouncementProvider with ChangeNotifier {
             .child(image)
             .getDownloadURL();
 
-        urlImagesDownload.add(imageUrl);
+        _urlImagesDownload.add(imageUrl);
+        print(_urlImagesDownload);
       }
-      notifyListeners();
-      // print(newAnnouncementModel.urlImagesDownload);
     });
+    notifyListeners();
   }
 
   Future<void> _saveAnnouncementModel({
     required String newAnnouncementId,
     required NewAnnouncementModel newAnnouncementModel,
-    required List<String> urlImagesDownload,
   }) async {
-    print(urlImagesDownload);
     await _firebaseFirestore
         .collection('announcements')
         .doc(_firebaseAuth.currentUser!.uid)
         .collection('my_announcements')
         .doc(newAnnouncementId)
-        .set(newAnnouncementModel.toMap(urlImagesDownload));
+        .set(newAnnouncementModel.toMap(_urlImagesDownload));
   }
 }

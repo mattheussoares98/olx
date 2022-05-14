@@ -1,8 +1,6 @@
 import 'package:brasil_fields/brasil_fields.dart';
 import 'package:flutter/material.dart';
 import 'package:olx/pages/new_announcement/new_announcement_model.dart';
-import 'package:olx/pages/new_announcement/new_announcement_provider.dart';
-import 'package:provider/provider.dart';
 
 class NewAnnouncementDropdownButton extends StatefulWidget {
   final NewAnnouncementModel newAnnouncementModel;
