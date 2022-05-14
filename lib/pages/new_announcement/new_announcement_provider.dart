@@ -19,36 +19,51 @@ class NewAnnouncementProvider with ChangeNotifier {
 
   // final NewAnnouncementModel _newAnnouncementModel = NewAnnouncementModel();
 
+  List<String> _urlImagesDownload = [];
   Future<void> saveAnnouncement({
     required List<File> images,
     required NewAnnouncementModel newAnnouncementModel,
   }) async {
     _isLoading = true;
     notifyListeners();
+
+    String newAnnouncementId = _firebaseFirestore
+        .collection('images')
+        .doc()
+        .id; //pegando o id antes de salvar a imagem. Coloquei aqui o ID pra ter o mesmo id no firebaseStorage e firestore
+
+    print(_urlImagesDownload);
     await _uploadImage(
+      newAnnouncementId: newAnnouncementId,
       images: images,
       newAnnouncementModel: newAnnouncementModel,
+      urlImagesDownload: _urlImagesDownload,
     );
-    await _saveAnnouncementModel(newAnnouncementModel);
+    print(_urlImagesDownload);
+
+    await _saveAnnouncementModel(
+      newAnnouncementId: newAnnouncementId,
+      newAnnouncementModel: newAnnouncementModel,
+      urlImagesDownload: _urlImagesDownload,
+    );
+
+    print(_urlImagesDownload);
+
     _isLoading = false;
     notifyListeners();
   }
 
   Future<void> _uploadImage({
     required List<File> images,
+    required String newAnnouncementId,
     required NewAnnouncementModel newAnnouncementModel,
+    required List<String> urlImagesDownload,
   }) async {
     UploadTask? uploadTasks;
-    String newAnnouncementId = _firebaseFirestore
-        .collection('images')
-        .doc()
-        .id; //pegando o id antes de salvar a imagem
 
-    List<String> imageNamesList =
+    List<dynamic> imageNamesList =
         []; //salvo o nome dos arquivos em uma lista pra depois conseguir pegar a url de download de cada uma
     String? imageName;
-    List<String> urlImagesDownload =
-        []; //adiciono a url de download de cada imagem nessa lista pra conseguir salvar essas urls no firestore
 
     try {
       for (var image in images) {
@@ -73,27 +88,30 @@ class NewAnnouncementProvider with ChangeNotifier {
       for (var image in imageNamesList) {
         String imageUrl = await _firebaseStorage
             .ref()
-            .child('my_announcements')
+            .child('announcements')
+            .child(_firebaseAuth.currentUser!.uid)
             .child(newAnnouncementId)
             .child(image)
             .getDownloadURL();
 
-        urlImagesDownload.add(
-            imageUrl); //adiciona a URL de download de todas imagens nessa lista pra conseguir salvar as URLs do firestore
+        urlImagesDownload.add(imageUrl);
       }
-      newAnnouncementModel.urlImagesDownload = urlImagesDownload;
+      notifyListeners();
+      // print(newAnnouncementModel.urlImagesDownload);
     });
   }
 
-  Future<void> _saveAnnouncementModel(
-    NewAnnouncementModel newAnnouncementModel,
-  ) async {
-    print(newAnnouncementModel.urlImagesDownload[0]);
+  Future<void> _saveAnnouncementModel({
+    required String newAnnouncementId,
+    required NewAnnouncementModel newAnnouncementModel,
+    required List<String> urlImagesDownload,
+  }) async {
+    print(urlImagesDownload);
     await _firebaseFirestore
         .collection('announcements')
         .doc(_firebaseAuth.currentUser!.uid)
         .collection('my_announcements')
-        .doc()
-        .set(newAnnouncementModel.toMap());
+        .doc(newAnnouncementId)
+        .set(newAnnouncementModel.toMap(urlImagesDownload));
   }
 }

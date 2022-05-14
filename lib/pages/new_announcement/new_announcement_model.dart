@@ -5,11 +5,10 @@ class NewAnnouncementModel {
   String? _price;
   String? _phoneNumber;
   String? _description;
-  List<String> _urlImagesDownload = [];
 
   NewAnnouncementModel();
 
-  Map<String, dynamic> toMap() {
+  Map<String, dynamic> toMap(List<String> urlImagesDownload) {
     Map<String, dynamic> map = {
       'state': _state,
       'typeOfAnnouncement': _typeOfAnnouncement,
@@ -17,7 +16,7 @@ class NewAnnouncementModel {
       'price': _price,
       'phoneNumber': _phoneNumber,
       'description': _description,
-      'images': _urlImagesDownload,
+      'images': urlImagesDownload,
     };
     return map;
   }
@@ -28,10 +27,10 @@ class NewAnnouncementModel {
   String get price => _price!;
   String get phoneNumber => _phoneNumber!;
   String get description => _description!;
-  List<String> get urlImagesDownload => _urlImagesDownload;
+  // List<String> get urlImagesDownload => _urlImagesDownload!;
 
   set state(value) => _state = value;
-  set urlImagesDownload(value) => _urlImagesDownload = value;
+  // set urlImagesDownload(value) => _urlImagesDownload = value;
   set typeOfAnnouncement(value) => _typeOfAnnouncement = value;
   set name(value) => _name = value;
   set price(value) => _price = value;

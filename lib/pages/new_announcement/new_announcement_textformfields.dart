@@ -2,6 +2,8 @@ import 'package:brasil_fields/brasil_fields.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:olx/pages/new_announcement/new_announcement_model.dart';
+import 'package:olx/pages/new_announcement/new_announcement_provider.dart';
+import 'package:provider/provider.dart';
 import '../../components/textfield_component.dart';
 
 class NewAnnouncementsTextFormFields extends StatefulWidget {
@@ -18,10 +20,14 @@ class NewAnnouncementsTextFormFields extends StatefulWidget {
 
 class _NewAnnouncementsTextFormFieldsState
     extends State<NewAnnouncementsTextFormFields> {
-  final TextEditingController _nameController = TextEditingController();
-  final TextEditingController _priceController = TextEditingController();
-  final TextEditingController _numberController = TextEditingController();
-  final TextEditingController _descriptionController = TextEditingController();
+  final TextEditingController _nameController =
+      TextEditingController(text: '111111111111');
+  final TextEditingController _priceController =
+      TextEditingController(text: '111111111111');
+  final TextEditingController _numberController =
+      TextEditingController(text: '(11) 96123-5430');
+  final TextEditingController _descriptionController =
+      TextEditingController(text: '111111111111');
 
   @override
   Widget build(BuildContext context) {

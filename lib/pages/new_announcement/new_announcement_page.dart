@@ -41,12 +41,10 @@ class _NewAnnouncementPageState extends State<NewAnnouncementPage> {
                   images: _images,
                 ),
                 NewAnnouncementDropdownButton(
-                  newAnnouncementModel: _newAnnouncementModel,
-                ),
+                    newAnnouncementModel: _newAnnouncementModel),
                 const SizedBox(height: 10),
                 NewAnnouncementsTextFormFields(
-                  newAnnouncementModel: _newAnnouncementModel,
-                ),
+                    newAnnouncementModel: _newAnnouncementModel),
                 PersonalizedButtonComponent(
                   isLoading: _newAnnouncementProvider.isLoading,
                   onPressed: () async {
