@@ -1,6 +1,8 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:olx/pages/announcement/announcement_page.dart';
+import 'package:olx/pages/announcement/announcements_provider.dart';
+import 'package:olx/pages/current_announcement/current_announcement_page.dart';
 import 'package:olx/pages/login/login_provider.dart';
 import 'package:olx/pages/login/login_page.dart';
 import 'package:olx/pages/my_announcements/my_announcements_page.dart';
@@ -21,6 +23,7 @@ void main() async {
       providers: [
         ChangeNotifierProvider(create: (_) => LoginProvider()),
         ChangeNotifierProvider(create: (_) => NewAnnouncementProvider()),
+        ChangeNotifierProvider(create: (_) => AnnouncementsProvider()),
       ],
       child: MaterialApp(
         theme: themeData,
@@ -32,6 +35,8 @@ void main() async {
           AppRoutes.login: (context) => const LoginPage(),
           AppRoutes.myAnnouncements: (context) => const MyAnnouncementsPage(),
           AppRoutes.newAnnouncement: (context) => const NewAnnouncementPage(),
+          AppRoutes.currentAnnouncement: (context) =>
+              const CurrentAnnouncementPage(),
         },
       ),
     ),

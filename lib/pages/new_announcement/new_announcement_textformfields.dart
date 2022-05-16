@@ -1,23 +1,23 @@
 import 'package:brasil_fields/brasil_fields.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:olx/pages/new_announcement/new_announcement_model.dart';
+import 'package:olx/pages/announcement/announcements_model.dart';
 import '../../components/textfield_component.dart';
 
-class NewAnnouncementsTextFormFields extends StatefulWidget {
-  final NewAnnouncementModel newAnnouncementModel;
-  const NewAnnouncementsTextFormFields({
+class AnnouncementsTextFormFields extends StatefulWidget {
+  final AnnouncementsModel newAnnouncementModel;
+  const AnnouncementsTextFormFields({
     required this.newAnnouncementModel,
     Key? key,
   }) : super(key: key);
 
   @override
-  State<NewAnnouncementsTextFormFields> createState() =>
-      _NewAnnouncementsTextFormFieldsState();
+  State<AnnouncementsTextFormFields> createState() =>
+      _AnnouncementsTextFormFieldsState();
 }
 
-class _NewAnnouncementsTextFormFieldsState
-    extends State<NewAnnouncementsTextFormFields> {
+class _AnnouncementsTextFormFieldsState
+    extends State<AnnouncementsTextFormFields> {
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _priceController = TextEditingController();
   final TextEditingController _numberController = TextEditingController();

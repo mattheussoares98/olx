@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:olx/pages/announcement/announcements_widget.dart';
 import 'package:olx/utils/app_routes.dart';
 
 class MyAnnouncementsPage extends StatefulWidget {
@@ -22,6 +23,7 @@ class _MyAnnouncementsPageState extends State<MyAnnouncementsPage> {
         },
         child: const Icon(Icons.add),
       ),
+      body: const AnnouncementsWidget(),
     );
   }
 }

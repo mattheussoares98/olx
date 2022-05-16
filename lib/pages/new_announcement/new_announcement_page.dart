@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:olx/components/personalized_button_component.dart';
 import 'package:olx/pages/new_announcement/new_announcement_dropdownbutton.dart';
 import 'package:olx/pages/new_announcement/new_announcement_images_widget.dart';
-import 'package:olx/pages/new_announcement/new_announcement_model.dart';
+import 'package:olx/pages/announcement/announcements_model.dart';
 import 'package:olx/pages/new_announcement/new_announcement_provider.dart';
 import 'package:olx/pages/new_announcement/new_announcement_textformfields.dart';
 import 'package:provider/provider.dart';
@@ -19,7 +19,7 @@ class NewAnnouncementPage extends StatefulWidget {
 class _NewAnnouncementPageState extends State<NewAnnouncementPage> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final List<File> _images = [];
-  final NewAnnouncementModel _newAnnouncementModel = NewAnnouncementModel();
+  final AnnouncementsModel _announcementsModel = AnnouncementsModel();
 
   @override
   Widget build(BuildContext context) {
@@ -41,10 +41,10 @@ class _NewAnnouncementPageState extends State<NewAnnouncementPage> {
                   images: _images,
                 ),
                 NewAnnouncementDropdownButton(
-                    newAnnouncementModel: _newAnnouncementModel),
+                    newAnnouncementModel: _announcementsModel),
                 const SizedBox(height: 10),
-                NewAnnouncementsTextFormFields(
-                    newAnnouncementModel: _newAnnouncementModel),
+                AnnouncementsTextFormFields(
+                    newAnnouncementModel: _announcementsModel),
                 PersonalizedButtonComponent(
                   isLoading: _newAnnouncementProvider.isLoading,
                   onPressed: () async {
@@ -53,7 +53,7 @@ class _NewAnnouncementPageState extends State<NewAnnouncementPage> {
                     if (isValid) {
                       await _newAnnouncementProvider.saveAnnouncement(
                         images: _images,
-                        newAnnouncementModel: _newAnnouncementModel,
+                        announcementsModel: _announcementsModel,
                       );
                     }
                   },

@@ -4,7 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:olx/pages/new_announcement/new_announcement_model.dart';
+import 'package:olx/pages/announcement/announcements_model.dart';
 
 class NewAnnouncementProvider with ChangeNotifier {
   final FirebaseStorage _firebaseStorage = FirebaseStorage.instance;
@@ -17,12 +17,12 @@ class NewAnnouncementProvider with ChangeNotifier {
   bool get isLoading => _isLoading;
   String get errorMessage => _errorMessage;
 
-  // final NewAnnouncementModel _newAnnouncementModel = NewAnnouncementModel();
+  // final announcementsModel _announcementsModel = announcementsModel();
 
   static List<String> _urlImagesDownload = [];
   Future<void> saveAnnouncement({
     required List<File> images,
-    required NewAnnouncementModel newAnnouncementModel,
+    required AnnouncementsModel announcementsModel,
   }) async {
     _isLoading = true;
     notifyListeners();
@@ -35,12 +35,12 @@ class NewAnnouncementProvider with ChangeNotifier {
     await _uploadImage(
       newAnnouncementId: newAnnouncementId,
       images: images,
-      newAnnouncementModel: newAnnouncementModel,
+      announcementsModel: announcementsModel,
     );
 
     await _saveAnnouncementModel(
       newAnnouncementId: newAnnouncementId,
-      newAnnouncementModel: newAnnouncementModel,
+      announcementsModel: announcementsModel,
     );
 
     _isLoading = false;
@@ -50,7 +50,7 @@ class NewAnnouncementProvider with ChangeNotifier {
   Future<void> _uploadImage({
     required List<File> images,
     required String newAnnouncementId,
-    required NewAnnouncementModel newAnnouncementModel,
+    required AnnouncementsModel announcementsModel,
   }) async {
     _urlImagesDownload.clear();
     UploadTask? uploadTasks;
@@ -97,13 +97,13 @@ class NewAnnouncementProvider with ChangeNotifier {
 
   Future<void> _saveAnnouncementModel({
     required String newAnnouncementId,
-    required NewAnnouncementModel newAnnouncementModel,
+    required AnnouncementsModel announcementsModel,
   }) async {
     await _firebaseFirestore
         .collection('announcements')
         .doc(_firebaseAuth.currentUser!.uid)
         .collection('my_announcements')
         .doc(newAnnouncementId)
-        .set(newAnnouncementModel.toMap(_urlImagesDownload));
+        .set(announcementsModel.toMap(_urlImagesDownload));
   }
 }

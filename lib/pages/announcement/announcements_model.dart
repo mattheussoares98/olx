@@ -1,12 +1,15 @@
-class NewAnnouncementModel {
+import 'package:cloud_firestore/cloud_firestore.dart';
+
+class AnnouncementsModel {
   String? _state;
   String? _typeOfAnnouncement;
   String? _name;
   String? _price;
   String? _phoneNumber;
   String? _description;
+  List<dynamic>? _urlImagesDownload;
 
-  NewAnnouncementModel();
+  AnnouncementsModel();
 
   Map<String, dynamic> toMap(List<String> urlImagesDownload) {
     Map<String, dynamic> map = {
@@ -21,16 +24,29 @@ class NewAnnouncementModel {
     return map;
   }
 
+  toAnnouncement({
+    required QueryDocumentSnapshot<Map<String, dynamic>> doc,
+    required AnnouncementsModel announcementsModel,
+  }) {
+    announcementsModel.state = doc['state'];
+    announcementsModel.typeOfAnnouncement = doc['typeOfAnnouncement'];
+    announcementsModel.name = doc['name'];
+    announcementsModel.price = doc['price'];
+    announcementsModel.phoneNumber = doc['phoneNumber'];
+    announcementsModel.description = doc['description'];
+    announcementsModel._urlImagesDownload = doc['images'];
+  }
+
   String get state => _state!;
   String get typeOfAnnouncement => _typeOfAnnouncement!;
   String get name => _name!;
   String get price => _price!;
   String get phoneNumber => _phoneNumber!;
   String get description => _description!;
-  // List<String> get urlImagesDownload => _urlImagesDownload!;
+  List<dynamic> get urlImagesDownload => _urlImagesDownload!;
 
   set state(value) => _state = value;
-  // set urlImagesDownload(value) => _urlImagesDownload = value;
+  set urlImagesDownload(value) => _urlImagesDownload = value;
   set typeOfAnnouncement(value) => _typeOfAnnouncement = value;
   set name(value) => _name = value;
   set price(value) => _price = value;
