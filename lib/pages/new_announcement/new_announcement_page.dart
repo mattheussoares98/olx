@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:olx/components/personalized_button_component.dart';
+import 'package:olx/pages/announcement/announcements_provider.dart';
 import 'package:olx/pages/new_announcement/new_announcement_dropdownbutton.dart';
 import 'package:olx/pages/new_announcement/new_announcement_images_widget.dart';
 import 'package:olx/pages/announcement/announcements_model.dart';

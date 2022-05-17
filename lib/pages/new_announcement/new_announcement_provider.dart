@@ -28,7 +28,7 @@ class NewAnnouncementProvider with ChangeNotifier {
     notifyListeners();
 
     String newAnnouncementId = _firebaseFirestore
-        .collection('images')
+        .collection('announcements')
         .doc()
         .id; //pegando o id antes de salvar a imagem. Coloquei aqui o ID pra ter o mesmo id no firebaseStorage e firestore
 
@@ -89,10 +89,8 @@ class NewAnnouncementProvider with ChangeNotifier {
             .getDownloadURL();
 
         _urlImagesDownload.add(imageUrl);
-        print(_urlImagesDownload);
       }
     });
-    notifyListeners();
   }
 
   Future<void> _saveAnnouncementModel({

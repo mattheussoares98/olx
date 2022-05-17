@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:olx/pages/announcement/announcements_provider.dart';
 import 'package:olx/pages/announcement/announcements_widget.dart';
 import 'package:olx/utils/app_routes.dart';
+import 'package:provider/provider.dart';
 
 class MyAnnouncementsPage extends StatefulWidget {
   const MyAnnouncementsPage({Key? key}) : super(key: key);
@@ -11,7 +13,19 @@ class MyAnnouncementsPage extends StatefulWidget {
 
 class _MyAnnouncementsPageState extends State<MyAnnouncementsPage> {
   @override
+  void initState() {
+    AnnouncementsProvider announcementsProvider =
+        Provider.of(context, listen: false);
+
+    announcementsProvider.listenChanges();
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    AnnouncementsProvider announcementsProvider =
+        Provider.of(context, listen: true);
+
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -23,7 +37,12 @@ class _MyAnnouncementsPageState extends State<MyAnnouncementsPage> {
         },
         child: const Icon(Icons.add),
       ),
-      body: const AnnouncementsWidget(),
+      body: AnnouncementsWidget(
+        isCurrentUserAnnouncementsPage: true,
+        stream: announcementsProvider.announcementsStream!,
+        announcementsList: announcementsProvider.currentUserAnnouncementsList,
+        isLoading: announcementsProvider.isLoading,
+      ),
     );
   }
 }

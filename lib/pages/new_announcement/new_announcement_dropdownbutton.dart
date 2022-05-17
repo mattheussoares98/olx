@@ -72,7 +72,7 @@ class _NewAnnouncementDropdownButtonState
               setState(() {
                 _selecteTypeAnnouncement = value!;
               });
-              widget.newAnnouncementModel.typeOfAnnouncement = value;
+              widget.newAnnouncementModel.type = value;
             },
             items: _typesOfAnnouncements
                 .map(
