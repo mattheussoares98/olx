@@ -25,7 +25,7 @@ class AnnouncementsModel {
     return map;
   }
 
-  toAnnouncement({
+  void toAnnouncement({
     required QueryDocumentSnapshot<Map<String, dynamic>> doc,
     required AnnouncementsModel announcementsModel,
   }) {

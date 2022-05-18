@@ -18,10 +18,8 @@ class AnnouncementsProvider with ChangeNotifier {
   String get errorMessage => _errorMessage;
 
   Stream<QuerySnapshot<Map<String, dynamic>>>? announcementsStream;
-  AnnouncementsModel _announcementsModel = AnnouncementsModel();
   List<AnnouncementsModel> currentUserAnnouncementsList = [];
   listenChanges() {
-    currentUserAnnouncementsList.clear();
     announcementsStream = _firebaseFirestore
         .collection('announcements')
         .doc(_firebaseAuth.currentUser!.uid)
@@ -29,14 +27,18 @@ class AnnouncementsProvider with ChangeNotifier {
         .snapshots();
 
     announcementsStream!.listen((event) {
+      currentUserAnnouncementsList.clear();
       for (var doc in event.docs) {
-        _announcementsModel =
+        AnnouncementsModel _announcementsModel =
             AnnouncementsModel(); //se não instanciar de novo, fica com BUG
         _announcementsModel.toAnnouncement(
           doc: doc,
           announcementsModel: _announcementsModel,
         );
-        currentUserAnnouncementsList.add(_announcementsModel);
+
+        if (!currentUserAnnouncementsList.contains(_announcementsModel)) {
+          currentUserAnnouncementsList.add(_announcementsModel);
+        }
       }
     });
   }
@@ -45,37 +47,30 @@ class AnnouncementsProvider with ChangeNotifier {
     _isLoading = true;
     notifyListeners();
     try {
-      // await _firebaseFirestore
-      //     .collection('announcements')
-      //     .doc(_firebaseAuth.currentUser!.uid)
-      //     .collection('my_announcements')
-      //     .doc(documentId)
-      //     .delete();
+      await _firebaseFirestore
+          .collection('announcements')
+          .doc(_firebaseAuth.currentUser!.uid)
+          .collection('my_announcements')
+          .doc(documentId)
+          .delete(); //excluindo o anúncio
 
-      var x = await _firebaseStorage
+      var listOfAnnouncementsInFirebase = await _firebaseStorage
           .ref()
           .child('announcements')
           .child(_firebaseAuth.currentUser!.uid)
-          .child(documentId);
+          .child(documentId)
+          .list(); //obtendo a lista de imagens
 
-      // print(x);
-      // print('x.fullPath = ${x.fullPath}');
-      // print('x.name = ${x.name}');
-      // print('x.parent = ${x.parent}');
-      // print('x.root = ${x.root}');
-      // print('x.bucket = ${x.bucket}');
+      for (var item in listOfAnnouncementsInFirebase.items) {
+        await item.delete(); //percorrendo cada item e excluindo um a um
+        //depois que exlui todos items, ele apaga automaticamente o caminho das imagens
+      }
 
-      var list = await x.list();
-      print(list.items[0].fullPath);
-      print(list.items[0].name);
+      currentUserAnnouncementsList.removeWhere(
+        (announcementModel) => announcementModel.id == documentId,
+      );
 
-      // await x.child('1652814695917').delete();
-
-      // await x.child(x.name).delete();
-
-      // currentUserAnnouncementsList.removeWhere(
-      //   (announcementModel) => announcementModel.id == documentId,
-      // );
+      currentUserAnnouncementsList = [];
     } catch (e) {
       print('ERRO PARA EXCLUIR O ANÚNCIO ============= $e');
       _errorMessage = e.toString();

@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:olx/components/personalized_button_component.dart';
+import 'package:olx/components/snackbar_component.dart';
 import 'package:olx/pages/announcement/announcements_provider.dart';
 import 'package:olx/pages/new_announcement/new_announcement_dropdownbutton.dart';
 import 'package:olx/pages/new_announcement/new_announcement_images_widget.dart';
@@ -26,6 +27,10 @@ class _NewAnnouncementPageState extends State<NewAnnouncementPage> {
   Widget build(BuildContext context) {
     NewAnnouncementProvider _newAnnouncementProvider =
         Provider.of(context, listen: true);
+
+    AnnouncementsProvider _announcementsProvider =
+        Provider.of(context, listen: true);
+
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -56,6 +61,20 @@ class _NewAnnouncementPageState extends State<NewAnnouncementPage> {
                         images: _images,
                         announcementsModel: _announcementsModel,
                       );
+
+                      if (_announcementsProvider.errorMessage == '') {
+                        Navigator.of(context).pop();
+                        SnackBarComponent().showSnackbar(
+                          context: context,
+                          backgroundColor: Colors.grey[850]!,
+                          message: 'O anúncio foi salvo com sucesso',
+                        );
+                      } else {
+                        SnackBarComponent().showSnackbar(
+                          context: context,
+                          message: _announcementsProvider.errorMessage,
+                        );
+                      }
                     }
                   },
                   text: 'Adicionar anúncio',

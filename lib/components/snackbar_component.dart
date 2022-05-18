@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class SnackBarComponent {
   showSnackbar({
-    required String error,
+    required String message,
     required BuildContext context,
     Color backgroundColor = Colors.red,
   }) {
@@ -15,7 +15,10 @@ class SnackBarComponent {
             vertical: 5,
             horizontal: 10,
           ),
-          child: Text(error),
+          child: Text(
+            message,
+            textAlign: TextAlign.center,
+          ),
         ),
       ),
     );

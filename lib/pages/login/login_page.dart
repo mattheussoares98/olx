@@ -137,8 +137,8 @@ class _LoginPageState extends State<LoginPage> {
 
                       if (loginProvider.errorMessage != '') {
                         SnackBarComponent().showSnackbar(
-                          error: loginProvider.errorMessage,
                           context: context,
+                          message: loginProvider.errorMessage,
                         );
                       }
                     },
