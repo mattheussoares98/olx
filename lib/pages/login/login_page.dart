@@ -136,7 +136,7 @@ class _LoginPageState extends State<LoginPage> {
                       await _loginOrRegister(loginProvider);
 
                       if (loginProvider.errorMessage != '') {
-                        SnackBarComponent().showSnackbar(
+                        SnackBarComponent.showSnackbar(
                           context: context,
                           message: loginProvider.errorMessage,
                         );

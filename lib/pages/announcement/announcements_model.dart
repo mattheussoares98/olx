@@ -27,16 +27,15 @@ class AnnouncementsModel {
 
   void toAnnouncement({
     required QueryDocumentSnapshot<Map<String, dynamic>> doc,
-    required AnnouncementsModel announcementsModel,
   }) {
-    announcementsModel.state = doc['state'];
-    announcementsModel.type = doc['type'];
-    announcementsModel.name = doc['name'];
-    announcementsModel.price = doc['price'];
-    announcementsModel.phoneNumber = doc['phoneNumber'];
-    announcementsModel.description = doc['description'];
-    announcementsModel._urlImagesDownload = doc['images'];
-    announcementsModel._id = doc.id;
+    _state = doc['state'];
+    _type = doc['type'];
+    _name = doc['name'];
+    _price = doc['price'];
+    _phoneNumber = doc['phoneNumber'];
+    _description = doc['description'];
+    _urlImagesDownload = doc['images'];
+    _id = doc.id;
   }
 
   String get state => _state!;

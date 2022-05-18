@@ -1,5 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:olx/components/show_dialog_component.dart';
+import 'package:olx/components/snackbar_component.dart';
 import 'package:olx/pages/announcement/announcements_model.dart';
 import 'package:olx/pages/announcement/announcements_provider.dart';
 import 'package:olx/utils/app_routes.dart';
@@ -99,9 +101,49 @@ class AnnouncementsWidget extends StatelessWidget {
                           onPressed: isLoading
                               ? null
                               : () async {
-                                  await announcementsProvider
-                                      .deleteAnnouncement(
-                                          announcementsList[index].id);
+                                  ShowDialogComponent.showDialogComponent(
+                                    context: context,
+                                    title: 'Deseja confirmar a exclusão?',
+                                    widgets: [
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceEvenly,
+                                        children: [
+                                          ElevatedButton(
+                                            style: ElevatedButton.styleFrom(
+                                              primary: Colors.red,
+                                            ),
+                                            onPressed: () {
+                                              Navigator.of(context).pop();
+                                            },
+                                            child: const Text('Não'),
+                                          ),
+                                          ElevatedButton(
+                                            child: const Text('Sim'),
+                                            style: ElevatedButton.styleFrom(
+                                              primary: Colors.green,
+                                            ),
+                                            onPressed: () async {
+                                              await announcementsProvider
+                                                  .deleteAnnouncement(
+                                                      announcementsList[index]
+                                                          .id);
+                                              Navigator.of(context).pop();
+                                              if (announcementsProvider
+                                                      .errorMessage !=
+                                                  '') {
+                                                SnackBarComponent.showSnackbar(
+                                                  message: announcementsProvider
+                                                      .errorMessage,
+                                                  context: context,
+                                                );
+                                              }
+                                            },
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  );
                                 },
                           icon: const Icon(
                             Icons.delete,

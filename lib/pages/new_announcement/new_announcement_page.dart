@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:olx/components/personalized_button_component.dart';
 import 'package:olx/components/snackbar_component.dart';
 import 'package:olx/pages/announcement/announcements_provider.dart';
-import 'package:olx/pages/new_announcement/new_announcement_dropdownbutton.dart';
+import 'package:olx/components/dropdownbutton_component.dart';
 import 'package:olx/pages/new_announcement/new_announcement_images_widget.dart';
 import 'package:olx/pages/announcement/announcements_model.dart';
 import 'package:olx/pages/new_announcement/new_announcement_provider.dart';
@@ -46,8 +46,8 @@ class _NewAnnouncementPageState extends State<NewAnnouncementPage> {
                 NewAnnouncementImagesWidget(
                   images: _images,
                 ),
-                NewAnnouncementDropdownButton(
-                    newAnnouncementModel: _announcementsModel),
+                DropdownButtonComponent(
+                    announcementsModel: _announcementsModel),
                 const SizedBox(height: 10),
                 AnnouncementsTextFormFields(
                     newAnnouncementModel: _announcementsModel),
@@ -64,13 +64,13 @@ class _NewAnnouncementPageState extends State<NewAnnouncementPage> {
 
                       if (_announcementsProvider.errorMessage == '') {
                         Navigator.of(context).pop();
-                        SnackBarComponent().showSnackbar(
+                        SnackBarComponent.showSnackbar(
                           context: context,
                           backgroundColor: Colors.grey[850]!,
                           message: 'O anúncio foi salvo com sucesso',
                         );
                       } else {
-                        SnackBarComponent().showSnackbar(
+                        SnackBarComponent.showSnackbar(
                           context: context,
                           message: _announcementsProvider.errorMessage,
                         );

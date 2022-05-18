@@ -1,5 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:olx/components/dropdownbutton_component.dart';
+import 'package:olx/pages/announcement/announcements_model.dart';
 import 'package:olx/utils/app_routes.dart';
 
 class AnnouncementPage extends StatefulWidget {
@@ -43,6 +45,7 @@ class _AnnouncementPageState extends State<AnnouncementPage> {
 
   @override
   Widget build(BuildContext context) {
+    AnnouncementsModel announcementsModel = AnnouncementsModel();
     return Scaffold(
       appBar: AppBar(
         title: const Text('Anúncios'),
@@ -64,8 +67,12 @@ class _AnnouncementPageState extends State<AnnouncementPage> {
           )
         ],
       ),
-      body: const Center(
-        child: Text('Anúncios'),
+      body: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: DropdownButtonComponent(
+          announcementsModel: announcementsModel,
+          isForm: false,
+        ),
       ),
     );
   }

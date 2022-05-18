@@ -11,7 +11,7 @@ class NewAnnouncementController {
   }) async {
     bool? isCamera;
 
-    await ShowDialogComponent().showDialogComponent(
+    await ShowDialogComponent.showDialogComponent(
       title: 'Como deseja adicionar a imagem?',
       context: context,
       widgets: [

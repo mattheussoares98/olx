@@ -37,11 +37,14 @@ class _MyAnnouncementsPageState extends State<MyAnnouncementsPage> {
         },
         child: const Icon(Icons.add),
       ),
-      body: AnnouncementsWidget(
-        isCurrentUserAnnouncementsPage: true,
-        stream: announcementsProvider.announcementsStream!,
-        announcementsList: announcementsProvider.currentUserAnnouncementsList,
-        isLoading: announcementsProvider.isLoading,
+      body: RefreshIndicator(
+        onRefresh: () => announcementsProvider.listenChanges(),
+        child: AnnouncementsWidget(
+          isCurrentUserAnnouncementsPage: true,
+          stream: announcementsProvider.announcementStreamController.stream,
+          announcementsList: announcementsProvider.currentUserAnnouncementsList,
+          isLoading: announcementsProvider.isLoading,
+        ),
       ),
     );
   }

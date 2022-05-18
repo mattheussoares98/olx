@@ -17,23 +17,26 @@ class AnnouncementsProvider with ChangeNotifier {
   String _errorMessage = '';
   String get errorMessage => _errorMessage;
 
-  Stream<QuerySnapshot<Map<String, dynamic>>>? announcementsStream;
+  Stream<QuerySnapshot<Map<String, dynamic>>>? _announcementsStream;
+  final announcementStreamController =
+      StreamController<QuerySnapshot<Map<String, dynamic>>>.broadcast();
   List<AnnouncementsModel> currentUserAnnouncementsList = [];
-  listenChanges() {
-    announcementsStream = _firebaseFirestore
+
+  Future<void> listenChanges() {
+    _announcementsStream = _firebaseFirestore
         .collection('announcements')
         .doc(_firebaseAuth.currentUser!.uid)
         .collection('my_announcements')
         .snapshots();
 
-    announcementsStream!.listen((event) {
+    _announcementsStream!.listen((event) {
+      announcementStreamController.add(event);
       currentUserAnnouncementsList.clear();
       for (var doc in event.docs) {
         AnnouncementsModel _announcementsModel =
             AnnouncementsModel(); //se não instanciar de novo, fica com BUG
         _announcementsModel.toAnnouncement(
           doc: doc,
-          announcementsModel: _announcementsModel,
         );
 
         if (!currentUserAnnouncementsList.contains(_announcementsModel)) {
@@ -41,6 +44,24 @@ class AnnouncementsProvider with ChangeNotifier {
         }
       }
     });
+
+    return Future.delayed(
+        const Duration()); //coloquei esse retorno de um Future pra conseguir usar
+    //um RefreshIndicator no MyAnnouncementsPage pra tentar carregar novamente os anúncios
+  }
+
+  _deleteImagesInStorage(String documentId) async {
+    var imagesInStorage = await _firebaseStorage
+        .ref()
+        .child('announcements')
+        .child(_firebaseAuth.currentUser!.uid)
+        .child(documentId)
+        .list(); //obtendo a lista de imagens
+
+    for (var item in imagesInStorage.items) {
+      await item.delete(); //percorrendo cada item e excluindo um a um
+      //depois que exlui todos items, ele apaga automaticamente o caminho das imagens
+    }
   }
 
   Future<void> deleteAnnouncement(documentId) async {
@@ -54,23 +75,14 @@ class AnnouncementsProvider with ChangeNotifier {
           .doc(documentId)
           .delete(); //excluindo o anúncio
 
-      var listOfAnnouncementsInFirebase = await _firebaseStorage
-          .ref()
-          .child('announcements')
-          .child(_firebaseAuth.currentUser!.uid)
-          .child(documentId)
-          .list(); //obtendo a lista de imagens
-
-      for (var item in listOfAnnouncementsInFirebase.items) {
-        await item.delete(); //percorrendo cada item e excluindo um a um
-        //depois que exlui todos items, ele apaga automaticamente o caminho das imagens
-      }
-
       currentUserAnnouncementsList.removeWhere(
         (announcementModel) => announcementModel.id == documentId,
       );
 
-      currentUserAnnouncementsList = [];
+      _deleteImagesInStorage(
+          documentId); //coloquei em uma função separada pra não precisar usar
+      //o await aqui. Assim, não fica esperando o término da exclusão das
+      //imagens para fechar o AlertDialog na página MyAnnouncementsPage
     } catch (e) {
       print('ERRO PARA EXCLUIR O ANÚNCIO ============= $e');
       _errorMessage = e.toString();

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class ShowDialogComponent {
-  showDialogComponent({
+  static showDialogComponent({
     required BuildContext context,
     required List<Widget> widgets,
     String? title,

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class SnackBarComponent {
-  showSnackbar({
+  static showSnackbar({
     required String message,
     required BuildContext context,
     Color backgroundColor = Colors.red,

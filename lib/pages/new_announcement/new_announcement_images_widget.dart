@@ -97,7 +97,7 @@ class _NewAnnouncementImagesWidgetState
                     backgroundImage: FileImage(widget.images[index]),
                   ),
                   onTap: () async {
-                    await ShowDialogComponent().showDialogComponent(
+                    await ShowDialogComponent.showDialogComponent(
                       context: context,
                       widgets: [
                         SizedBox(
