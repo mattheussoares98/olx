@@ -34,7 +34,7 @@ class AnnouncementsListViewWidget extends StatelessWidget {
               onTap: () {
                 Navigator.of(context).pushNamed(
                   AppRoutes.currentAnnouncement,
-                  arguments: index,
+                  arguments: announcementsList[index],
                 );
               },
               child: Card(

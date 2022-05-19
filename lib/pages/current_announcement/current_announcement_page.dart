@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:olx/pages/announcement/announcements_model.dart';
 import 'package:olx/pages/announcement/announcements_provider.dart';
 import 'package:provider/provider.dart';
 
@@ -7,10 +8,9 @@ class CurrentAnnouncementPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final index = ModalRoute.of(context)!.settings.arguments as int;
+    AnnouncementsModel announcementsModel =
+        ModalRoute.of(context)!.settings.arguments as AnnouncementsModel;
 
-    AnnouncementsProvider announcementsProvider =
-        Provider.of(context, listen: true);
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -18,29 +18,28 @@ class CurrentAnnouncementPage extends StatelessWidget {
       ),
       body: Column(
         children: [
-          Container(
+          SizedBox(
             child: Image.network(
-              announcementsProvider
-                  .myAnnouncementsList[index].urlImagesDownload[0],
+              announcementsModel.urlImagesDownload[0],
             ),
           ),
           Text(
-            announcementsProvider.myAnnouncementsList[index].name,
+            announcementsModel.name,
           ),
           Text(
-            announcementsProvider.myAnnouncementsList[index].description,
+            announcementsModel.description,
           ),
           Text(
-            announcementsProvider.myAnnouncementsList[index].phoneNumber,
+            announcementsModel.phoneNumber,
           ),
           Text(
-            announcementsProvider.myAnnouncementsList[index].price,
+            announcementsModel.price,
           ),
           Text(
-            announcementsProvider.myAnnouncementsList[index].state,
+            announcementsModel.state,
           ),
           Text(
-            announcementsProvider.myAnnouncementsList[index].type,
+            announcementsModel.type,
           ),
         ],
       ),
