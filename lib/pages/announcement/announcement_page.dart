@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:olx/components/dropdownbutton_component.dart';
@@ -22,6 +23,7 @@ class _AnnouncementPageState extends State<AnnouncementPage> {
     AnnouncementsProvider _announcementsProvider =
         Provider.of(context, listen: false);
     _announcementsProvider.listenAllAnnouncements();
+    _announcementsProvider.listenStatesAndTypesOfAnnouncements();
 
     if (FirebaseAuth.instance.currentUser != null) {
       _popupMenuOptions = [
@@ -56,6 +58,9 @@ class _AnnouncementPageState extends State<AnnouncementPage> {
     AnnouncementsProvider _announcementsProvider =
         Provider.of(context, listen: true);
 
+    List<AnnouncementsModel> announcementsList =
+        _announcementsProvider.allAnnouncementsList;
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Anúncios'),
@@ -86,14 +91,14 @@ class _AnnouncementPageState extends State<AnnouncementPage> {
               DropdownButtonComponent(
                 announcementsModel: announcementsModel,
                 isForm: false,
+                announcementsList: announcementsList,
               ),
               Expanded(
                 child: AnnouncementsListViewWidget(
                   isCurrentUserAnnouncementsPage: false,
                   stream: _announcementsProvider
                       .allAnnouncementStreamController.stream,
-                  announcementsList:
-                      _announcementsProvider.allAnnouncementsList,
+                  announcementsList: announcementsList,
                   isLoading: _announcementsProvider.isLoading,
                 ),
               )

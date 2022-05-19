@@ -36,7 +36,7 @@ void main() async {
           AppRoutes.myAnnouncements: (context) => const MyAnnouncementsPage(),
           AppRoutes.newAnnouncement: (context) => const NewAnnouncementPage(),
           AppRoutes.currentAnnouncement: (context) =>
-              const CurrentAnnouncementPage(),
+              const DetailsAnnouncementPage(),
         },
       ),
     ),

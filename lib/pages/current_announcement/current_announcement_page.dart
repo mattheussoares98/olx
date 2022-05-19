@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:olx/pages/announcement/announcements_model.dart';
-import 'package:olx/pages/announcement/announcements_provider.dart';
-import 'package:provider/provider.dart';
 
-class CurrentAnnouncementPage extends StatelessWidget {
-  const CurrentAnnouncementPage({Key? key}) : super(key: key);
+class DetailsAnnouncementPage extends StatelessWidget {
+  const DetailsAnnouncementPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -14,7 +12,7 @@ class CurrentAnnouncementPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: const Text('Meu anúncio'),
+        title: const Text('Detalhes do anúncio'),
       ),
       body: Column(
         children: [

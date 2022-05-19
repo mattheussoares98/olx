@@ -30,6 +30,8 @@ class AnnouncementsListViewWidget extends StatelessWidget {
         return ListView.builder(
           itemCount: announcementsList.length,
           itemBuilder: (context, index) {
+            // print(snapshot.data?.docs[index].data());
+            // print(announcementsList[0].type);
             return InkWell(
               onTap: () {
                 Navigator.of(context).pushNamed(

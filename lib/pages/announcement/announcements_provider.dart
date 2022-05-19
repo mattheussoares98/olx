@@ -50,10 +50,44 @@ class AnnouncementsProvider with ChangeNotifier {
     //um RefreshIndicator no MyAnnouncementsPage pra tentar carregar novamente os anúncios
   }
 
+  final List<dynamic> _typesOfAnnouncements = [];
+  List<dynamic> get typesOfAnnouncements => _typesOfAnnouncements;
+  final List<dynamic> _states = [];
+  List<dynamic> get states => _states;
+
+  listenStatesAndTypesOfAnnouncements() async {
+    var allStates = await _firebaseFirestore.collection('states').get();
+
+    List states = allStates.docs[0].data()['states'];
+    for (var state in states) {
+      _states.add(state);
+    }
+
+    var allTypesOfAnnouncements =
+        await _firebaseFirestore.collection('typesOfAnnouncements').get();
+    List typesOfAnnouncements = allTypesOfAnnouncements.docs[0].data()['types'];
+    for (var type in typesOfAnnouncements) {
+      _typesOfAnnouncements.add(type);
+    }
+
+    notifyListeners();
+  }
+
+  filterStates(String state) async {
+    if (state == 'Tipo de anúncio') {
+    } else {
+      var x = await _firebaseFirestore
+          .collection('allAnnouncements')
+          .where('state', isEqualTo: state)
+          .get();
+    }
+  }
+
   Stream<QuerySnapshot<Map<String, dynamic>>>? _allAnnouncementsStream;
   final allAnnouncementStreamController =
       StreamController<QuerySnapshot<Map<String, dynamic>>>.broadcast();
-  List<AnnouncementsModel> allAnnouncementsList = [];
+  final List<AnnouncementsModel> _allAnnouncementsList = [];
+  List<AnnouncementsModel> get allAnnouncementsList => _allAnnouncementsList;
 
   Future<void> listenAllAnnouncements() {
     _allAnnouncementsStream =
@@ -61,7 +95,7 @@ class AnnouncementsProvider with ChangeNotifier {
 
     _allAnnouncementsStream!.listen((event) {
       allAnnouncementStreamController.add(event);
-      allAnnouncementsList.clear();
+      _allAnnouncementsList.clear();
       for (var doc in event.docs) {
         AnnouncementsModel _announcementsModel =
             AnnouncementsModel(); //se não instanciar de novo, fica com BUG
@@ -69,8 +103,8 @@ class AnnouncementsProvider with ChangeNotifier {
           doc: doc,
         );
 
-        if (!allAnnouncementsList.contains(_announcementsModel)) {
-          allAnnouncementsList.add(_announcementsModel);
+        if (!_allAnnouncementsList.contains(_announcementsModel)) {
+          _allAnnouncementsList.add(_announcementsModel);
         }
       }
     });

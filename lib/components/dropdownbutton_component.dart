@@ -1,13 +1,16 @@
-import 'package:brasil_fields/brasil_fields.dart';
 import 'package:flutter/material.dart';
 import 'package:olx/pages/announcement/announcements_model.dart';
+import 'package:olx/pages/announcement/announcements_provider.dart';
+import 'package:provider/provider.dart';
 
 class DropdownButtonComponent extends StatefulWidget {
   final AnnouncementsModel announcementsModel;
   final bool isForm;
+  final List<AnnouncementsModel>? announcementsList;
   const DropdownButtonComponent({
     required this.announcementsModel,
     this.isForm = true,
+    this.announcementsList,
     Key? key,
   }) : super(key: key);
 
@@ -19,38 +22,22 @@ class DropdownButtonComponent extends StatefulWidget {
 class _DropdownButtonStateComponent extends State<DropdownButtonComponent> {
   String? _selectedState;
   String? _selecteTypeAnnouncement;
-  final List<String> _typesOfAnnouncements = [
-    //o ideal é deixar essa lista salva no banco de dados, pois se precisar adicionar algum tipo fica mais fácil. Não vai precisar gerar uma nova versão
-    'Tipo de anúncio',
-    'Automóvel',
-    'Imóvel',
-    'Eletrônico',
-    'Celular',
-    'Bicicleta',
-    'Outros',
-  ];
-
-  List<String> states = [];
-  getStates() {
-    states.clear();
-    states.add('Estado');
-    for (var state in Estados.listaEstadosSigla) {
-      states.add(state);
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
-    getStates();
+    AnnouncementsProvider announcementsProvider =
+        Provider.of(context, listen: true);
 
     if (widget.isForm) {
-      states.removeWhere((element) => element == 'Estado');
-      _typesOfAnnouncements
+      announcementsProvider.states
+          .removeWhere((element) => element == 'Estado');
+      announcementsProvider.typesOfAnnouncements
           .removeWhere((element) => element == 'Tipo de anúncio');
+
       return Row(
         children: [
           Expanded(
-            child: DropdownButtonFormField<String>(
+            child: DropdownButtonFormField<dynamic>(
               value: _selectedState,
               hint: Text(
                 'Estado',
@@ -71,7 +58,7 @@ class _DropdownButtonStateComponent extends State<DropdownButtonComponent> {
                 });
                 widget.announcementsModel.state = value;
               },
-              items: states
+              items: announcementsProvider.states
                   .map(
                     (estados) => DropdownMenuItem(
                       value: estados,
@@ -83,7 +70,7 @@ class _DropdownButtonStateComponent extends State<DropdownButtonComponent> {
           ),
           const SizedBox(width: 20),
           Expanded(
-            child: DropdownButtonFormField<String>(
+            child: DropdownButtonFormField<dynamic>(
               value: _selecteTypeAnnouncement,
               validator: (value) {
                 if (value == null) {
@@ -103,7 +90,7 @@ class _DropdownButtonStateComponent extends State<DropdownButtonComponent> {
                 });
                 widget.announcementsModel.type = value;
               },
-              items: _typesOfAnnouncements
+              items: announcementsProvider.typesOfAnnouncements
                   .map(
                     (selectedAnnouncement) => DropdownMenuItem(
                       value: selectedAnnouncement,
@@ -120,14 +107,14 @@ class _DropdownButtonStateComponent extends State<DropdownButtonComponent> {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
-            DropdownButton<String>(
+            DropdownButton<dynamic>(
               iconEnabledColor: Theme.of(context).colorScheme.primary,
-              items: states
+              items: announcementsProvider.states
                   .map(
-                    (estados) => DropdownMenuItem<String>(
+                    (estados) => DropdownMenuItem<dynamic>(
                       value: estados,
                       child: Text(
-                        estados,
+                        estados.toString(),
                         style: estados == 'Estado'
                             ? TextStyle(
                                 color: Theme.of(context).colorScheme.primary,
@@ -144,15 +131,16 @@ class _DropdownButtonStateComponent extends State<DropdownButtonComponent> {
                   color: Theme.of(context).colorScheme.primary,
                 ),
               ),
-              onChanged: (value) {
+              onChanged: (stateSelected) {
+                announcementsProvider.filterStates(stateSelected);
                 setState(() {
-                  _selectedState = value;
+                  _selectedState = stateSelected;
                 });
-                widget.announcementsModel.state = value;
+                widget.announcementsModel.state = stateSelected;
               },
             ),
             const SizedBox(width: 20),
-            DropdownButton<String>(
+            DropdownButton<dynamic>(
               iconEnabledColor: Theme.of(context).colorScheme.primary,
               value: _selecteTypeAnnouncement,
               hint: Text(
@@ -167,12 +155,12 @@ class _DropdownButtonStateComponent extends State<DropdownButtonComponent> {
                 });
                 widget.announcementsModel.type = value;
               },
-              items: _typesOfAnnouncements
+              items: announcementsProvider.typesOfAnnouncements
                   .map(
                     (selectedAnnouncement) => DropdownMenuItem(
                       value: selectedAnnouncement,
                       child: Text(
-                        selectedAnnouncement,
+                        selectedAnnouncement.toString(),
                         style: selectedAnnouncement == 'Tipo de anúncio'
                             ? TextStyle(
                                 color: Theme.of(context).colorScheme.primary,
