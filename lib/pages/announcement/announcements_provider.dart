@@ -17,21 +17,21 @@ class AnnouncementsProvider with ChangeNotifier {
   String _errorMessage = '';
   String get errorMessage => _errorMessage;
 
-  Stream<QuerySnapshot<Map<String, dynamic>>>? _announcementsStream;
-  final announcementStreamController =
+  Stream<QuerySnapshot<Map<String, dynamic>>>? _myAnnouncementsStream;
+  final myAnnouncementStreamController =
       StreamController<QuerySnapshot<Map<String, dynamic>>>.broadcast();
-  List<AnnouncementsModel> currentUserAnnouncementsList = [];
+  List<AnnouncementsModel> myAnnouncementsList = [];
 
-  Future<void> listenChanges() {
-    _announcementsStream = _firebaseFirestore
+  Future<void> listenMyAnnouncements() {
+    _myAnnouncementsStream = _firebaseFirestore
         .collection('announcements')
         .doc(_firebaseAuth.currentUser!.uid)
         .collection('my_announcements')
         .snapshots();
 
-    _announcementsStream!.listen((event) {
-      announcementStreamController.add(event);
-      currentUserAnnouncementsList.clear();
+    _myAnnouncementsStream!.listen((event) {
+      myAnnouncementStreamController.add(event);
+      myAnnouncementsList.clear();
       for (var doc in event.docs) {
         AnnouncementsModel _announcementsModel =
             AnnouncementsModel(); //se não instanciar de novo, fica com BUG
@@ -39,8 +39,38 @@ class AnnouncementsProvider with ChangeNotifier {
           doc: doc,
         );
 
-        if (!currentUserAnnouncementsList.contains(_announcementsModel)) {
-          currentUserAnnouncementsList.add(_announcementsModel);
+        if (!myAnnouncementsList.contains(_announcementsModel)) {
+          myAnnouncementsList.add(_announcementsModel);
+        }
+      }
+    });
+
+    return Future.delayed(
+        const Duration()); //coloquei esse retorno de um Future pra conseguir usar
+    //um RefreshIndicator no MyAnnouncementsPage pra tentar carregar novamente os anúncios
+  }
+
+  Stream<QuerySnapshot<Map<String, dynamic>>>? _allAnnouncementsStream;
+  final allAnnouncementStreamController =
+      StreamController<QuerySnapshot<Map<String, dynamic>>>.broadcast();
+  List<AnnouncementsModel> allAnnouncementsList = [];
+
+  Future<void> listenAllAnnouncements() {
+    _allAnnouncementsStream =
+        _firebaseFirestore.collection('allAnnouncements').snapshots();
+
+    _allAnnouncementsStream!.listen((event) {
+      allAnnouncementStreamController.add(event);
+      allAnnouncementsList.clear();
+      for (var doc in event.docs) {
+        AnnouncementsModel _announcementsModel =
+            AnnouncementsModel(); //se não instanciar de novo, fica com BUG
+        _announcementsModel.toAnnouncement(
+          doc: doc,
+        );
+
+        if (!allAnnouncementsList.contains(_announcementsModel)) {
+          allAnnouncementsList.add(_announcementsModel);
         }
       }
     });
@@ -73,9 +103,14 @@ class AnnouncementsProvider with ChangeNotifier {
           .doc(_firebaseAuth.currentUser!.uid)
           .collection('my_announcements')
           .doc(documentId)
-          .delete(); //excluindo o anúncio
+          .delete(); //excluindo meu anúncio
 
-      currentUserAnnouncementsList.removeWhere(
+      await _firebaseFirestore
+          .collection('allAnnouncements')
+          .doc(documentId)
+          .delete(); //excluindo de todos anúncios também
+
+      myAnnouncementsList.removeWhere(
         (announcementModel) => announcementModel.id == documentId,
       );
 

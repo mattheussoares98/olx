@@ -47,10 +47,14 @@ class _NewAnnouncementPageState extends State<NewAnnouncementPage> {
                   images: _images,
                 ),
                 DropdownButtonComponent(
-                    announcementsModel: _announcementsModel),
+                  announcementsModel: _announcementsModel,
+                ),
                 const SizedBox(height: 10),
                 AnnouncementsTextFormFields(
-                    newAnnouncementModel: _announcementsModel),
+                  newAnnouncementModel: _announcementsModel,
+                  enabled: !_newAnnouncementProvider
+                      .isLoading, //se não estiver carregando, fica habilitado
+                ),
                 PersonalizedButtonComponent(
                   isLoading: _newAnnouncementProvider.isLoading,
                   onPressed: () async {

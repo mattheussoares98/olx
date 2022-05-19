@@ -7,12 +7,12 @@ import 'package:olx/pages/announcement/announcements_provider.dart';
 import 'package:olx/utils/app_routes.dart';
 import 'package:provider/provider.dart';
 
-class AnnouncementsWidget extends StatelessWidget {
+class AnnouncementsListViewWidget extends StatelessWidget {
   final bool isLoading;
   final List<AnnouncementsModel> announcementsList;
   final Stream<QuerySnapshot<Map<String, dynamic>>> stream;
   final bool isCurrentUserAnnouncementsPage;
-  const AnnouncementsWidget({
+  const AnnouncementsListViewWidget({
     required this.isCurrentUserAnnouncementsPage,
     required this.stream,
     required this.announcementsList,

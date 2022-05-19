@@ -21,28 +21,26 @@ class CurrentAnnouncementPage extends StatelessWidget {
           Container(
             child: Image.network(
               announcementsProvider
-                  .currentUserAnnouncementsList[index].urlImagesDownload[0],
+                  .myAnnouncementsList[index].urlImagesDownload[0],
             ),
           ),
           Text(
-            announcementsProvider.currentUserAnnouncementsList[index].name,
+            announcementsProvider.myAnnouncementsList[index].name,
           ),
           Text(
-            announcementsProvider
-                .currentUserAnnouncementsList[index].description,
+            announcementsProvider.myAnnouncementsList[index].description,
           ),
           Text(
-            announcementsProvider
-                .currentUserAnnouncementsList[index].phoneNumber,
+            announcementsProvider.myAnnouncementsList[index].phoneNumber,
           ),
           Text(
-            announcementsProvider.currentUserAnnouncementsList[index].price,
+            announcementsProvider.myAnnouncementsList[index].price,
           ),
           Text(
-            announcementsProvider.currentUserAnnouncementsList[index].state,
+            announcementsProvider.myAnnouncementsList[index].state,
           ),
           Text(
-            announcementsProvider.currentUserAnnouncementsList[index].type,
+            announcementsProvider.myAnnouncementsList[index].type,
           ),
         ],
       ),

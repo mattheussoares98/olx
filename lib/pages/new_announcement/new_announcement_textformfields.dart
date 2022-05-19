@@ -6,7 +6,9 @@ import '../../components/textfield_component.dart';
 
 class AnnouncementsTextFormFields extends StatefulWidget {
   final AnnouncementsModel newAnnouncementModel;
+  final bool enabled;
   const AnnouncementsTextFormFields({
+    this.enabled = true,
     required this.newAnnouncementModel,
     Key? key,
   }) : super(key: key);
@@ -33,7 +35,7 @@ class _AnnouncementsTextFormFieldsState
           },
           label: 'Nome',
           textEditingController: _nameController,
-          enabled: true,
+          enabled: widget.enabled,
           textInputFormatter: [
             FilteringTextInputFormatter.singleLineFormatter,
           ],
@@ -51,7 +53,7 @@ class _AnnouncementsTextFormFieldsState
           },
           label: 'Preço',
           textEditingController: _priceController,
-          enabled: true,
+          enabled: widget.enabled,
           textInputType: TextInputType.number,
           textInputFormatter: [
             FilteringTextInputFormatter.digitsOnly,
@@ -71,7 +73,7 @@ class _AnnouncementsTextFormFieldsState
           maxLength: 15,
           label: 'Telefone',
           textEditingController: _numberController,
-          enabled: true,
+          enabled: widget.enabled,
           textInputType: TextInputType.number,
           textInputFormatter: [
             FilteringTextInputFormatter.digitsOnly,
@@ -95,7 +97,7 @@ class _AnnouncementsTextFormFieldsState
           maxLines: 4,
           label: 'Descrição',
           textEditingController: _descriptionController,
-          enabled: true,
+          enabled: widget.enabled,
           validator: (value) {
             if (value!.isEmpty) {
               return 'Digite uma descrição!';

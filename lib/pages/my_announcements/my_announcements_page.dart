@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:olx/pages/announcement/announcements_provider.dart';
-import 'package:olx/pages/announcement/announcements_widget.dart';
+import 'package:olx/pages/announcement/announcements_listview_widget.dart';
 import 'package:olx/utils/app_routes.dart';
 import 'package:provider/provider.dart';
 
@@ -17,7 +17,7 @@ class _MyAnnouncementsPageState extends State<MyAnnouncementsPage> {
     AnnouncementsProvider announcementsProvider =
         Provider.of(context, listen: false);
 
-    announcementsProvider.listenChanges();
+    announcementsProvider.listenMyAnnouncements();
     super.initState();
   }
 
@@ -25,6 +25,7 @@ class _MyAnnouncementsPageState extends State<MyAnnouncementsPage> {
   Widget build(BuildContext context) {
     AnnouncementsProvider announcementsProvider =
         Provider.of(context, listen: true);
+    setState(() {});
 
     return Scaffold(
       appBar: AppBar(
@@ -38,11 +39,11 @@ class _MyAnnouncementsPageState extends State<MyAnnouncementsPage> {
         child: const Icon(Icons.add),
       ),
       body: RefreshIndicator(
-        onRefresh: () => announcementsProvider.listenChanges(),
-        child: AnnouncementsWidget(
+        onRefresh: () => announcementsProvider.listenMyAnnouncements(),
+        child: AnnouncementsListViewWidget(
           isCurrentUserAnnouncementsPage: true,
-          stream: announcementsProvider.announcementStreamController.stream,
-          announcementsList: announcementsProvider.currentUserAnnouncementsList,
+          stream: announcementsProvider.myAnnouncementStreamController.stream,
+          announcementsList: announcementsProvider.myAnnouncementsList,
           isLoading: announcementsProvider.isLoading,
         ),
       ),

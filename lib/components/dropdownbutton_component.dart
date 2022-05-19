@@ -44,6 +44,9 @@ class _DropdownButtonStateComponent extends State<DropdownButtonComponent> {
     getStates();
 
     if (widget.isForm) {
+      states.removeWhere((element) => element == 'Estado');
+      _typesOfAnnouncements
+          .removeWhere((element) => element == 'Tipo de anúncio');
       return Row(
         children: [
           Expanded(

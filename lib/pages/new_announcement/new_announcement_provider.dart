@@ -38,7 +38,12 @@ class NewAnnouncementProvider with ChangeNotifier {
       announcementsModel: announcementsModel,
     );
 
-    await _saveAnnouncementModel(
+    await _saveMyAnnouncement(
+      newAnnouncementId: newAnnouncementId,
+      announcementsModel: announcementsModel,
+    );
+
+    await _saveAllAnnouncements(
       newAnnouncementId: newAnnouncementId,
       announcementsModel: announcementsModel,
     );
@@ -93,7 +98,7 @@ class NewAnnouncementProvider with ChangeNotifier {
     });
   }
 
-  Future<void> _saveAnnouncementModel({
+  Future<void> _saveMyAnnouncement({
     required String newAnnouncementId,
     required AnnouncementsModel announcementsModel,
   }) async {
@@ -101,6 +106,16 @@ class NewAnnouncementProvider with ChangeNotifier {
         .collection('announcements')
         .doc(_firebaseAuth.currentUser!.uid)
         .collection('my_announcements')
+        .doc(newAnnouncementId)
+        .set(announcementsModel.toMap(_urlImagesDownload));
+  }
+
+  Future<void> _saveAllAnnouncements({
+    required String newAnnouncementId,
+    required AnnouncementsModel announcementsModel,
+  }) async {
+    await _firebaseFirestore
+        .collection('allAnnouncements')
         .doc(newAnnouncementId)
         .set(announcementsModel.toMap(_urlImagesDownload));
   }
