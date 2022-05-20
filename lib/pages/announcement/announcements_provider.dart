@@ -56,6 +56,9 @@ class AnnouncementsProvider with ChangeNotifier {
   List<dynamic> get states => _states;
 
   listenStatesAndTypesOfAnnouncements() async {
+    if (_firebaseAuth.currentUser == null) {
+      return;
+    }
     var allStates = await _firebaseFirestore.collection('states').get();
 
     List states = allStates.docs[0].data()['states'];
@@ -73,14 +76,68 @@ class AnnouncementsProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  filterStates(String state) async {
-    if (state == 'Tipo de anúncio') {
+  filterTypeAnnouncement(String type) async {
+    _allAnnouncementsList.clear();
+    if (type == 'Tipo de anúncio') {
+      var announcements =
+          await _firebaseFirestore.collection('allAnnouncements').get();
+
+      for (var announcement in announcements.docs) {
+        AnnouncementsModel _announcementsModel =
+            AnnouncementsModel(); //se não instanciar de novo, fica com BUG
+
+        _announcementsModel.toAnnouncement(doc: announcement);
+
+        _allAnnouncementsList.add(_announcementsModel);
+      }
     } else {
-      var x = await _firebaseFirestore
+      var announcements = await _firebaseFirestore
+          .collection('allAnnouncements')
+          .where('type', isEqualTo: type)
+          .get();
+
+      for (var announcement in announcements.docs) {
+        AnnouncementsModel _announcementsModel =
+            AnnouncementsModel(); //se não instanciar de novo, fica com BUG
+
+        _announcementsModel.toAnnouncement(doc: announcement);
+
+        _allAnnouncementsList.add(_announcementsModel);
+      }
+    }
+    notifyListeners();
+  }
+
+  filterState(String state) async {
+    _allAnnouncementsList.clear();
+    if (state == 'Estado') {
+      var announcements =
+          await _firebaseFirestore.collection('allAnnouncements').get();
+
+      for (var announcement in announcements.docs) {
+        AnnouncementsModel announcementsModel = AnnouncementsModel();
+
+        announcementsModel.toAnnouncement(doc: announcement);
+
+        _allAnnouncementsList.add(announcementsModel);
+      }
+    } else {
+      var announcements = await _firebaseFirestore
           .collection('allAnnouncements')
           .where('state', isEqualTo: state)
           .get();
+
+      for (var announcement in announcements.docs) {
+        print('teste');
+        AnnouncementsModel announcementsModel = AnnouncementsModel();
+
+        announcementsModel.toAnnouncement(doc: announcement);
+
+        _allAnnouncementsList.add(announcementsModel);
+      }
     }
+
+    notifyListeners();
   }
 
   Stream<QuerySnapshot<Map<String, dynamic>>>? _allAnnouncementsStream;

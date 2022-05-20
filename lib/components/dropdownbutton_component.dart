@@ -132,8 +132,8 @@ class _DropdownButtonStateComponent extends State<DropdownButtonComponent> {
                 ),
               ),
               onChanged: (stateSelected) {
-                announcementsProvider.filterStates(stateSelected);
                 setState(() {
+                  announcementsProvider.filterState(stateSelected);
                   _selectedState = stateSelected;
                 });
                 widget.announcementsModel.state = stateSelected;
@@ -149,7 +149,8 @@ class _DropdownButtonStateComponent extends State<DropdownButtonComponent> {
                   color: Theme.of(context).colorScheme.primary,
                 ),
               ),
-              onChanged: (value) {
+              onChanged: (value) async {
+                await announcementsProvider.filterTypeAnnouncement(value);
                 setState(() {
                   _selecteTypeAnnouncement = value!;
                 });

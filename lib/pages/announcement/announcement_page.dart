@@ -6,6 +6,7 @@ import 'package:olx/pages/announcement/announcements_model.dart';
 import 'package:olx/pages/announcement/announcements_provider.dart';
 import 'package:olx/pages/announcement/announcements_listview_widget.dart';
 import 'package:olx/utils/app_routes.dart';
+import 'package:olx/utils/restart_app.dart';
 import 'package:provider/provider.dart';
 
 class AnnouncementPage extends StatefulWidget {
@@ -83,7 +84,7 @@ class _AnnouncementPageState extends State<AnnouncementPage> {
         ],
       ),
       body: RefreshIndicator(
-        onRefresh: () => _announcementsProvider.listenAllAnnouncements(),
+        onRefresh: () async => RestartWidget.restartApp(context),
         child: Padding(
           padding: const EdgeInsets.all(8.0),
           child: Column(

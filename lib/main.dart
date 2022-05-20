@@ -9,6 +9,7 @@ import 'package:olx/pages/my_announcements/my_announcements_page.dart';
 import 'package:olx/pages/new_announcement/new_announcement_page.dart';
 import 'package:olx/pages/new_announcement/new_announcement_provider.dart';
 import 'package:olx/utils/app_routes.dart';
+import 'package:olx/utils/restart_app.dart';
 import 'package:provider/provider.dart';
 
 void main() async {
@@ -19,25 +20,27 @@ void main() async {
     primaryColor: Colors.purple,
   );
   runApp(
-    MultiProvider(
-      providers: [
-        ChangeNotifierProvider(create: (_) => LoginProvider()),
-        ChangeNotifierProvider(create: (_) => NewAnnouncementProvider()),
-        ChangeNotifierProvider(create: (_) => AnnouncementsProvider()),
-      ],
-      child: MaterialApp(
-        theme: themeData,
-        debugShowCheckedModeBanner: false,
-        home: const AnnouncementPage(),
-        initialRoute: AppRoutes.announcements,
-        routes: {
-          AppRoutes.announcements: (context) => const AnnouncementPage(),
-          AppRoutes.login: (context) => const LoginPage(),
-          AppRoutes.myAnnouncements: (context) => const MyAnnouncementsPage(),
-          AppRoutes.newAnnouncement: (context) => const NewAnnouncementPage(),
-          AppRoutes.currentAnnouncement: (context) =>
-              const DetailsAnnouncementPage(),
-        },
+    RestartWidget(
+      child: MultiProvider(
+        providers: [
+          ChangeNotifierProvider(create: (_) => LoginProvider()),
+          ChangeNotifierProvider(create: (_) => NewAnnouncementProvider()),
+          ChangeNotifierProvider(create: (_) => AnnouncementsProvider()),
+        ],
+        child: MaterialApp(
+          theme: themeData,
+          debugShowCheckedModeBanner: false,
+          home: const AnnouncementPage(),
+          initialRoute: AppRoutes.announcements,
+          routes: {
+            AppRoutes.announcements: (context) => const AnnouncementPage(),
+            AppRoutes.login: (context) => const LoginPage(),
+            AppRoutes.myAnnouncements: (context) => const MyAnnouncementsPage(),
+            AppRoutes.newAnnouncement: (context) => const NewAnnouncementPage(),
+            AppRoutes.currentAnnouncement: (context) =>
+                const DetailsAnnouncementPage(),
+          },
+        ),
       ),
     ),
   );
