@@ -38,6 +38,7 @@ class _MyAnnouncementsPageState extends State<MyAnnouncementsPage> {
         },
         child: const Icon(Icons.add),
       ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       body: RefreshIndicator(
         onRefresh: () => announcementsProvider.listenMyAnnouncements(),
         child: AnnouncementsListViewWidget(
