@@ -76,34 +76,33 @@ class AnnouncementsProvider with ChangeNotifier {
     notifyListeners();
   }
 
+  _addDocsInAnnouncementList({
+    required QuerySnapshot<Map<String, dynamic>> announcements,
+  }) {
+    for (var announcement in announcements.docs) {
+      AnnouncementsModel _announcementsModel =
+          AnnouncementsModel(); //se não instanciar de novo, fica com BUG
+
+      _announcementsModel.toAnnouncement(doc: announcement);
+
+      _allAnnouncementsList.add(_announcementsModel);
+    }
+  }
+
   filterTypeAnnouncement(String type) async {
     _allAnnouncementsList.clear();
     if (type == 'Tipo de anúncio') {
       var announcements =
           await _firebaseFirestore.collection('allAnnouncements').get();
 
-      for (var announcement in announcements.docs) {
-        AnnouncementsModel _announcementsModel =
-            AnnouncementsModel(); //se não instanciar de novo, fica com BUG
-
-        _announcementsModel.toAnnouncement(doc: announcement);
-
-        _allAnnouncementsList.add(_announcementsModel);
-      }
+      _addDocsInAnnouncementList(announcements: announcements);
     } else {
       var announcements = await _firebaseFirestore
           .collection('allAnnouncements')
           .where('type', isEqualTo: type)
           .get();
 
-      for (var announcement in announcements.docs) {
-        AnnouncementsModel _announcementsModel =
-            AnnouncementsModel(); //se não instanciar de novo, fica com BUG
-
-        _announcementsModel.toAnnouncement(doc: announcement);
-
-        _allAnnouncementsList.add(_announcementsModel);
-      }
+      _addDocsInAnnouncementList(announcements: announcements);
     }
     notifyListeners();
   }
@@ -114,27 +113,14 @@ class AnnouncementsProvider with ChangeNotifier {
       var announcements =
           await _firebaseFirestore.collection('allAnnouncements').get();
 
-      for (var announcement in announcements.docs) {
-        AnnouncementsModel announcementsModel = AnnouncementsModel();
-
-        announcementsModel.toAnnouncement(doc: announcement);
-
-        _allAnnouncementsList.add(announcementsModel);
-      }
+      _addDocsInAnnouncementList(announcements: announcements);
     } else {
       var announcements = await _firebaseFirestore
           .collection('allAnnouncements')
           .where('state', isEqualTo: state)
           .get();
 
-      for (var announcement in announcements.docs) {
-        print('teste');
-        AnnouncementsModel announcementsModel = AnnouncementsModel();
-
-        announcementsModel.toAnnouncement(doc: announcement);
-
-        _allAnnouncementsList.add(announcementsModel);
-      }
+      _addDocsInAnnouncementList(announcements: announcements);
     }
 
     notifyListeners();

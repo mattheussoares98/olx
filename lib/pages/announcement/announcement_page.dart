@@ -83,30 +83,34 @@ class _AnnouncementPageState extends State<AnnouncementPage> {
           )
         ],
       ),
-      body: RefreshIndicator(
-        onRefresh: () async => RestartWidget.restartApp(context),
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Column(
-            children: [
-              DropdownButtonComponent(
-                announcementsModel: announcementsModel,
-                isForm: false,
-                announcementsList: announcementsList,
-              ),
-              Expanded(
-                child: AnnouncementsListViewWidget(
-                  isCurrentUserAnnouncementsPage: false,
-                  stream: _announcementsProvider
-                      .allAnnouncementStreamController.stream,
-                  announcementsList: announcementsList,
-                  isLoading: _announcementsProvider.isLoading,
+      body: FirebaseAuth.instance.currentUser == null
+          ? const Center(
+              child: Text('Faça o login para ver os anúncios'),
+            )
+          : RefreshIndicator(
+              onRefresh: () async => RestartWidget.restartApp(context),
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Column(
+                  children: [
+                    DropdownButtonComponent(
+                      announcementsModel: announcementsModel,
+                      isForm: false,
+                      announcementsList: announcementsList,
+                    ),
+                    Expanded(
+                      child: AnnouncementsListViewWidget(
+                        isCurrentUserAnnouncementsPage: false,
+                        stream: _announcementsProvider
+                            .allAnnouncementStreamController.stream,
+                        announcementsList: announcementsList,
+                        isLoading: _announcementsProvider.isLoading,
+                      ),
+                    )
+                  ],
                 ),
-              )
-            ],
-          ),
-        ),
-      ),
+              ),
+            ),
     );
   }
 }
